@@ -3,13 +3,13 @@ title: "ANÀLISI DE DADES ÒMIQUES"
 author: "Daniel Sánchez"
 date: '`r format(Sys.Date(),"%e de %B, %Y")`'
 output:
-  pdf_document:
-    toc: true
-    number_sections: true
   html_document:
     toc: true
     toc_depth: 3
     toc_float: true
+  pdf_document:
+    toc: true
+    number_sections: true
 bibliography: "C:/Users/dd28/OneDrive/Màster/08. Anàlisi de dades òmiques/Unitat 1. Les ómiques/PAC1/referencies.bib"
 editor_options: 
   markdown: 
@@ -241,9 +241,8 @@ El codi i les dades utilitzades en aquest estudi estan disponibles al següent r
 
 ## Annexes
 
-**Descomposició dels càlculs d'EIG:**
-
 **Matriu de correlacions:**
+
 ```{r}
 R
 ```

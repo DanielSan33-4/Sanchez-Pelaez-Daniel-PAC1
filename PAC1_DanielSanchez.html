@@ -1511,7 +1511,7 @@ border-radius: 0px;
 <div id="prova-davaluació-contínua" class="section level1">
 <h1>PROVA D’AVALUACIÓ CONTÍNUA</h1>
 <div id="resum" class="section level2">
-<h2>1. Resum</h2>
+<h2>Resum</h2>
 <p>Aquest estudi analitza els nivells de biomolècules en orina per
 identificar possibles diferències entre pacients control i pacients amb
 caquèxia. Es realitza una anàlisi de components principals (PCA) per
@@ -1522,7 +1522,7 @@ la variació de les dades, fet que pot ser rellevant per estudis
 biomèdics.</p>
 </div>
 <div id="objectius" class="section level2">
-<h2>2. Objectius</h2>
+<h2>Objectius</h2>
 <p>A nivell general, l’objectiu principal és planificar i exevutar una
 versió simplificada del procés d’anàlisi de dades òmiques, alhora que es
 treballa amb eines i mètodes vistos en l’assignatura.</p>
@@ -1537,7 +1537,7 @@ dels grups.</li>
 </ul>
 </div>
 <div id="mètodes" class="section level2">
-<h2>3. Mètodes</h2>
+<h2>Mètodes</h2>
 <div id="dades" class="section level3">
 <h3>Dades</h3>
 <p>Les dades s’han obtingut del repositori facilitat a l’enunciat de
@@ -1575,7 +1575,7 @@ variabilitat.</li>
 </div>
 </div>
 <div id="resultats" class="section level2">
-<h2>4. Resultats</h2>
+<h2>Resultats</h2>
 <p>La principal diferència entre <code>SummarizedExperiment</code> i
 <code>ExpressionSet</code>, és què el primer és més flexbile en la
 informació de files, permeten els basats en <code>GRanges</code>i els
@@ -1710,154 +1710,27 @@ dades.</p>
 <p>Finalment, es poden comparar els vectors obringut els tres
 mètodes.</p>
 <p>Primer mètode:</p>
-<pre class="r"><code>EIG$vectors[,1]</code></pre>
-<pre><code>##  [1] -0.0073705650 -0.0071888723 -0.0015869038 -0.0023680187 -0.0212316043
-##  [6] -0.0096481157 -0.0024423997 -0.0023581616 -0.0200924404 -0.0091624317
-## [11] -0.0062654655 -0.0008158222 -0.0030140039 -0.0277339653 -0.0056489585
-## [16] -0.0056298088 -0.0024653825 -0.2194561979 -0.0071002685 -0.9416806687
-## [21] -0.0388025987 -0.0303773866 -0.0181786141 -0.0095168598 -0.0010202294
-## [26] -0.0320750612 -0.0278575074 -0.0791026073 -0.0145728062 -0.0051942710
-## [31] -0.1975957249 -0.0321503967 -0.0066106507 -0.0004928095 -0.0105073404
-## [36] -0.0021044991 -0.0052488167 -0.0012301660 -0.0011894641 -0.0025904768
-## [41] -0.0018213825 -0.0038528589 -0.0234748835 -0.0025934557 -0.0049203080
-## [46] -0.0182071992 -0.0094506666 -0.0053516046 -0.0056529095 -0.0570777518
-## [51] -0.0088793981 -0.0388583327 -0.0592272865 -0.0049928425 -0.0088883207
-## [56] -0.0031341871 -0.0031692932 -0.0139710013 -0.0318446599 -0.0075144014
-## [61] -0.0030844249 -0.0260383952 -0.0065001408</code></pre>
+<pre class="r"><code>head(EIG$vectors[,1],5)</code></pre>
+<pre><code>## [1] -0.007370565 -0.007188872 -0.001586904 -0.002368019 -0.021231604</code></pre>
 <p>Segon mètode (<code>princomp</code>):</p>
-<pre class="r"><code>PCAS_met2$loadings[,1]</code></pre>
+<pre class="r"><code>head(PCAS_met2$loadings[,1],5)</code></pre>
 <pre><code>## X1.6.Anhydro.beta.D.glucose       X1.Methylnicotinamide 
-##                0.0073705650                0.0071888723 
+##                 0.007370565                 0.007188872 
 ##            X2.Aminobutyrate       X2.Hydroxyisobutyrate 
-##                0.0015869038                0.0023680187 
-##             X2.Oxoglutarate         X3.Aminoisobutyrate 
-##                0.0212316043                0.0096481157 
-##          X3.Hydroxybutyrate       X3.Hydroxyisovalerate 
-##                0.0024423997                0.0023581616 
-##           X3.Indoxylsulfate     X4.Hydroxyphenylacetate 
-##                0.0200924404                0.0091624317 
-##                     Acetate                     Acetone 
-##                0.0062654655                0.0008158222 
-##                     Adipate                     Alanine 
-##                0.0030140039                0.0277339653 
-##                  Asparagine                     Betaine 
-##                0.0056489585                0.0056298088 
-##                   Carnitine                     Citrate 
-##                0.0024653825                0.2194561979 
-##                    Creatine                  Creatinine 
-##                0.0071002685                0.9416806687 
-##               Dimethylamine                Ethanolamine 
-##                0.0388025987                0.0303773866 
-##                     Formate                      Fucose 
-##                0.0181786141                0.0095168598 
-##                    Fumarate                     Glucose 
-##                0.0010202294                0.0320750612 
-##                   Glutamine                     Glycine 
-##                0.0278575074                0.0791026073 
-##                   Glycolate              Guanidoacetate 
-##                0.0145728062                0.0051942710 
-##                   Hippurate                   Histidine 
-##                0.1975957249                0.0321503967 
-##                Hypoxanthine                  Isoleucine 
-##                0.0066106507                0.0004928095 
-##                     Lactate                     Leucine 
-##                0.0105073404                0.0021044991 
-##                      Lysine                 Methylamine 
-##                0.0052488167                0.0012301660 
-##             Methylguanidine         N.N.Dimethylglycine 
-##                0.0011894641                0.0025904768 
-##           O.Acetylcarnitine                Pantothenate 
-##                0.0018213825                0.0038528589 
-##               Pyroglutamate                    Pyruvate 
-##                0.0234748835                0.0025934557 
-##                 Quinolinate                      Serine 
-##                0.0049203080                0.0182071992 
-##                   Succinate                     Sucrose 
-##                0.0094506666                0.0053516046 
-##                    Tartrate                     Taurine 
-##                0.0056529095                0.0570777518 
-##                   Threonine                Trigonelline 
-##                0.0088793981                0.0388583327 
-##      Trimethylamine.N.oxide                  Tryptophan 
-##                0.0592272865                0.0049928425 
-##                    Tyrosine                      Uracil 
-##                0.0088883207                0.0031341871 
-##                      Valine                      Xylose 
-##                0.0031692932                0.0139710013 
-##               cis.Aconitate                myo.Inositol 
-##                0.0318446599                0.0075144014 
-##             trans.Aconitate          pi.Methylhistidine 
-##                0.0030844249                0.0260383952 
-##         tau.Methylhistidine 
-##                0.0065001408</code></pre>
+##                 0.001586904                 0.002368019 
+##             X2.Oxoglutarate 
+##                 0.021231604</code></pre>
 <p>Tercer mètode (<code>prcomp</code>):</p>
-<pre class="r"><code>PCAS_met3$rotation[,1]</code></pre>
+<pre class="r"><code>head(PCAS_met3$rotation[,1],5)</code></pre>
 <pre><code>## X1.6.Anhydro.beta.D.glucose       X1.Methylnicotinamide 
-##                0.0073705650                0.0071888723 
+##                 0.007370565                 0.007188872 
 ##            X2.Aminobutyrate       X2.Hydroxyisobutyrate 
-##                0.0015869038                0.0023680187 
-##             X2.Oxoglutarate         X3.Aminoisobutyrate 
-##                0.0212316043                0.0096481157 
-##          X3.Hydroxybutyrate       X3.Hydroxyisovalerate 
-##                0.0024423997                0.0023581616 
-##           X3.Indoxylsulfate     X4.Hydroxyphenylacetate 
-##                0.0200924404                0.0091624317 
-##                     Acetate                     Acetone 
-##                0.0062654655                0.0008158222 
-##                     Adipate                     Alanine 
-##                0.0030140039                0.0277339653 
-##                  Asparagine                     Betaine 
-##                0.0056489585                0.0056298088 
-##                   Carnitine                     Citrate 
-##                0.0024653825                0.2194561979 
-##                    Creatine                  Creatinine 
-##                0.0071002685                0.9416806687 
-##               Dimethylamine                Ethanolamine 
-##                0.0388025987                0.0303773866 
-##                     Formate                      Fucose 
-##                0.0181786141                0.0095168598 
-##                    Fumarate                     Glucose 
-##                0.0010202294                0.0320750612 
-##                   Glutamine                     Glycine 
-##                0.0278575074                0.0791026073 
-##                   Glycolate              Guanidoacetate 
-##                0.0145728062                0.0051942710 
-##                   Hippurate                   Histidine 
-##                0.1975957249                0.0321503967 
-##                Hypoxanthine                  Isoleucine 
-##                0.0066106507                0.0004928095 
-##                     Lactate                     Leucine 
-##                0.0105073404                0.0021044991 
-##                      Lysine                 Methylamine 
-##                0.0052488167                0.0012301660 
-##             Methylguanidine         N.N.Dimethylglycine 
-##                0.0011894641                0.0025904768 
-##           O.Acetylcarnitine                Pantothenate 
-##                0.0018213825                0.0038528589 
-##               Pyroglutamate                    Pyruvate 
-##                0.0234748835                0.0025934557 
-##                 Quinolinate                      Serine 
-##                0.0049203080                0.0182071992 
-##                   Succinate                     Sucrose 
-##                0.0094506666                0.0053516046 
-##                    Tartrate                     Taurine 
-##                0.0056529095                0.0570777518 
-##                   Threonine                Trigonelline 
-##                0.0088793981                0.0388583327 
-##      Trimethylamine.N.oxide                  Tryptophan 
-##                0.0592272865                0.0049928425 
-##                    Tyrosine                      Uracil 
-##                0.0088883207                0.0031341871 
-##                      Valine                      Xylose 
-##                0.0031692932                0.0139710013 
-##               cis.Aconitate                myo.Inositol 
-##                0.0318446599                0.0075144014 
-##             trans.Aconitate          pi.Methylhistidine 
-##                0.0030844249                0.0260383952 
-##         tau.Methylhistidine 
-##                0.0065001408</code></pre>
-<p>Els pesos adjuntats pels tres mètodes pertanyen al primer component,
-s’adjunten els pesos de tots els components en els annexos.</p>
+##                 0.001586904                 0.002368019 
+##             X2.Oxoglutarate 
+##                 0.021231604</code></pre>
+<p>Els pesos adjuntats pels tres mètodes pertanyen a les cinc primeres
+molècules del primer component, s’adjunten els pesos de tots els
+components en els annexos.</p>
 </div>
 <div id="interpretació-dels-components" class="section level3">
 <h3>Interpretació dels components</h3>
@@ -1872,72 +1745,14 @@ citrate i el hippurate són la segona i tercera biomolècula amb més
 pes.</p>
 <p>Aquí es poden veure, a mode d’exemple, ja que en l’apartat de
 resultats es poden observar tots, els pesos del primer component amb el
-segon mètode aplicat ordenats per pes i amb el valor absolut.</p>
-<pre class="r"><code>PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))]</code></pre>
-<pre><code>##                  Creatinine                     Citrate 
-##                0.9416806687                0.2194561979 
-##                   Hippurate                     Glycine 
-##                0.1975957249                0.0791026073 
-##      Trimethylamine.N.oxide                     Taurine 
-##                0.0592272865                0.0570777518 
-##                Trigonelline               Dimethylamine 
-##                0.0388583327                0.0388025987 
-##                   Histidine                     Glucose 
-##                0.0321503967                0.0320750612 
-##               cis.Aconitate                Ethanolamine 
-##                0.0318446599                0.0303773866 
-##                   Glutamine                     Alanine 
-##                0.0278575074                0.0277339653 
-##          pi.Methylhistidine               Pyroglutamate 
-##                0.0260383952                0.0234748835 
-##             X2.Oxoglutarate           X3.Indoxylsulfate 
-##                0.0212316043                0.0200924404 
-##                      Serine                     Formate 
-##                0.0182071992                0.0181786141 
-##                   Glycolate                      Xylose 
-##                0.0145728062                0.0139710013 
-##                     Lactate         X3.Aminoisobutyrate 
-##                0.0105073404                0.0096481157 
-##                      Fucose                   Succinate 
-##                0.0095168598                0.0094506666 
-##     X4.Hydroxyphenylacetate                    Tyrosine 
-##                0.0091624317                0.0088883207 
-##                   Threonine                myo.Inositol 
-##                0.0088793981                0.0075144014 
-## X1.6.Anhydro.beta.D.glucose       X1.Methylnicotinamide 
-##                0.0073705650                0.0071888723 
-##                    Creatine                Hypoxanthine 
-##                0.0071002685                0.0066106507 
-##         tau.Methylhistidine                     Acetate 
-##                0.0065001408                0.0062654655 
-##                    Tartrate                  Asparagine 
-##                0.0056529095                0.0056489585 
-##                     Betaine                     Sucrose 
-##                0.0056298088                0.0053516046 
-##                      Lysine              Guanidoacetate 
-##                0.0052488167                0.0051942710 
-##                  Tryptophan                 Quinolinate 
-##                0.0049928425                0.0049203080 
-##                Pantothenate                      Valine 
-##                0.0038528589                0.0031692932 
-##                      Uracil             trans.Aconitate 
-##                0.0031341871                0.0030844249 
-##                     Adipate                    Pyruvate 
-##                0.0030140039                0.0025934557 
-##         N.N.Dimethylglycine                   Carnitine 
-##                0.0025904768                0.0024653825 
-##          X3.Hydroxybutyrate       X2.Hydroxyisobutyrate 
-##                0.0024423997                0.0023680187 
-##       X3.Hydroxyisovalerate                     Leucine 
-##                0.0023581616                0.0021044991 
-##           O.Acetylcarnitine            X2.Aminobutyrate 
-##                0.0018213825                0.0015869038 
-##                 Methylamine             Methylguanidine 
-##                0.0012301660                0.0011894641 
-##                    Fumarate                     Acetone 
-##                0.0010202294                0.0008158222 
-##                  Isoleucine 
-##                0.0004928095</code></pre>
+segon mètode aplicat ordenats per pes i amb el valor absolut. Es mostren
+només els 5 primers, ja que a partir del tercer tots són molt propers a
+zero. La taula completa s’adjunta als annexes.</p>
+<pre class="r"><code>head(PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))],5)</code></pre>
+<pre><code>##             Creatinine                Citrate              Hippurate 
+##             0.94168067             0.21945620             0.19759572 
+##                Glycine Trimethylamine.N.oxide 
+##             0.07910261             0.05922729</code></pre>
 <p>A partir d’aquesta taula es pot treure la següent fórmula:</p>
 <p><span class="math inline">\(PCA2 = CP_Nou = 0.9417 * Creatinine +
 0.2195 * Citrate + 0.1976 * Hippurate + ... + 0.0005 *
@@ -1951,7 +1766,7 @@ contrastats.</p>
 </div>
 </div>
 <div id="discussió" class="section level2">
-<h2>5. Discussió</h2>
+<h2>Discussió</h2>
 <p>Aquest estudi ha permès identificar patrons en les dades mitjançant
 PCA i altres tècniques estadístiques. Les limitacions inclouen la
 necessitat d’un conjunt de dades més gran, amb més observacions, per
@@ -1965,7 +1780,7 @@ les variables numèriques i el context de l’estudi. Aquestes dades
 manquen en el dataset triat.</p>
 </div>
 <div id="conclusions" class="section level2">
-<h2>6. Conclusions</h2>
+<h2>Conclusions</h2>
 <p>Les principals conclusions extretes de l’estudi indiquen una
 consistència entre els tres mètodes aplicats per a l’anàlisi de
 components principals, suggerint la robustesa dels resultats. El primer
@@ -1973,7 +1788,7 @@ component principal, que explica un significatiu 77.2% de la
 variabilitat, destaca la creatinina, el citrat i l’hipurat com les
 biomolècules amb major pes a l’hora de discriminar entre pacients amb
 caquèxia i el grup control. Aquesta observació es recolza en la fórmula
-del component principal obtinguda amb el segon mètode <span class="math inline">\(PCA2 = CP_Nou = 0.9417 * Creatinine + 0.2195 *
+del component principal obtinguda amb el segon mètode: <span class="math inline">\(PCA2 = CP_Nou = 0.9417 * Creatinine + 0.2195 *
 Citrate + 0.1976 * Hippurate + ... + 0.0005 * Isoleucine\)</span>), on
 aquestes tres molècules presenten els coeficients més elevats. La
 dispersió més gran observada en els valors dels pacients amb caquèxia en
@@ -1984,16 +1799,17 @@ citrat i l’hipurat són biomarcadors potencials per a la detecció o la
 diferenciació de la caquèxia.</p>
 </div>
 <div id="referències" class="section level2">
-<h2>7. Referències</h2>
+<h2>Referències</h2>
 <ul>
 <li><span class="citation">Morgan et al. (2023)</span></li>
 <li><span class="citation">Sánchez and Carmona (2024)</span></li>
 <li><span class="citation">Nutrimetabolomics (2024)</span></li>
 </ul>
+<p>El codi i les dades utilitzades en aquest estudi estan disponibles al
+següent repositori de GitHub: [<a href="https://github.com/DanielSan33-4/Sanchez-Pelaez-Daniel-PAC1.git" class="uri">https://github.com/DanielSan33-4/Sanchez-Pelaez-Daniel-PAC1.git</a>]</p>
 </div>
 <div id="annexes" class="section level2">
-<h2>8. Annexes</h2>
-<p><strong>Descomposició dels càlculs d’EIG:</strong></p>
+<h2>Annexes</h2>
 <p><strong>Matriu de correlacions:</strong></p>
 <pre class="r"><code>R</code></pre>
 <pre><code>##                             X1.6.Anhydro.beta.D.glucose X1.Methylnicotinamide
@@ -7051,6 +6867,72 @@ treballat:</strong></p>
 ## trans.Aconitate             -0.0777490067  0.0191801352 -9.320760e-03
 ## pi.Methylhistidine           0.0027007025  0.0039714548 -2.204843e-03
 ## tau.Methylhistidine         -0.0163786592 -0.0052501996 -2.011711e-03</code></pre>
+<p><strong>Pesos segon component ordenats:</strong></p>
+<pre class="r"><code>PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))]</code></pre>
+<pre><code>##                  Creatinine                     Citrate 
+##                0.9416806687                0.2194561979 
+##                   Hippurate                     Glycine 
+##                0.1975957249                0.0791026073 
+##      Trimethylamine.N.oxide                     Taurine 
+##                0.0592272865                0.0570777518 
+##                Trigonelline               Dimethylamine 
+##                0.0388583327                0.0388025987 
+##                   Histidine                     Glucose 
+##                0.0321503967                0.0320750612 
+##               cis.Aconitate                Ethanolamine 
+##                0.0318446599                0.0303773866 
+##                   Glutamine                     Alanine 
+##                0.0278575074                0.0277339653 
+##          pi.Methylhistidine               Pyroglutamate 
+##                0.0260383952                0.0234748835 
+##             X2.Oxoglutarate           X3.Indoxylsulfate 
+##                0.0212316043                0.0200924404 
+##                      Serine                     Formate 
+##                0.0182071992                0.0181786141 
+##                   Glycolate                      Xylose 
+##                0.0145728062                0.0139710013 
+##                     Lactate         X3.Aminoisobutyrate 
+##                0.0105073404                0.0096481157 
+##                      Fucose                   Succinate 
+##                0.0095168598                0.0094506666 
+##     X4.Hydroxyphenylacetate                    Tyrosine 
+##                0.0091624317                0.0088883207 
+##                   Threonine                myo.Inositol 
+##                0.0088793981                0.0075144014 
+## X1.6.Anhydro.beta.D.glucose       X1.Methylnicotinamide 
+##                0.0073705650                0.0071888723 
+##                    Creatine                Hypoxanthine 
+##                0.0071002685                0.0066106507 
+##         tau.Methylhistidine                     Acetate 
+##                0.0065001408                0.0062654655 
+##                    Tartrate                  Asparagine 
+##                0.0056529095                0.0056489585 
+##                     Betaine                     Sucrose 
+##                0.0056298088                0.0053516046 
+##                      Lysine              Guanidoacetate 
+##                0.0052488167                0.0051942710 
+##                  Tryptophan                 Quinolinate 
+##                0.0049928425                0.0049203080 
+##                Pantothenate                      Valine 
+##                0.0038528589                0.0031692932 
+##                      Uracil             trans.Aconitate 
+##                0.0031341871                0.0030844249 
+##                     Adipate                    Pyruvate 
+##                0.0030140039                0.0025934557 
+##         N.N.Dimethylglycine                   Carnitine 
+##                0.0025904768                0.0024653825 
+##          X3.Hydroxybutyrate       X2.Hydroxyisobutyrate 
+##                0.0024423997                0.0023680187 
+##       X3.Hydroxyisovalerate                     Leucine 
+##                0.0023581616                0.0021044991 
+##           O.Acetylcarnitine            X2.Aminobutyrate 
+##                0.0018213825                0.0015869038 
+##                 Methylamine             Methylguanidine 
+##                0.0012301660                0.0011894641 
+##                    Fumarate                     Acetone 
+##                0.0010202294                0.0008158222 
+##                  Isoleucine 
+##                0.0004928095</code></pre>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-SummarizedExperiment" class="csl-entry">
 Morgan, Martin, Valerie Obenchain, Jim Hester, and Hervé Pagès. 2023.
