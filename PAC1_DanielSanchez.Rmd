@@ -1,0 +1,236 @@
+---
+title: "ANÀLISI DE DADES ÒMIQUES"
+author: "Daniel Sánchez"
+date: '`r format(Sys.Date(),"%e de %B, %Y")`'
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+  pdf_document:
+    toc: true
+    number_sections: true
+bibliography: "C:/Users/dd28/OneDrive/Màster/08. Anàlisi de dades òmiques/Unitat 1. Les ómiques/PAC1/referencies.bib"
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# PROVA D'AVALUACIÓ CONTÍNUA
+
+## 1. Resum
+
+Aquest estudi analitza els nivells de biomolècules en orina per identificar possibles diferències entre pacients control i pacients amb caquèxia.
+Es realitza una anàlisi de components principals (PCA) per explorar patrons latents en les dades i determinar quines biomolècules tenen un major impacte en la diferenciació dels grups.
+Els resultats obtinguts mostren que certes biomolècules tenen una major influència en la variació de les dades, fet que pot ser rellevant per estudis biomèdics.
+
+## 2. Objectius
+
+A nivell general, l'objectiu principal és planificar i exevutar una versió simplificada del procés d'anàlisi de dades òmiques, alhora que es treballa amb eines i mètodes vistos en l'assignatura.
+
+Més especificament, els objectius per l'estudi de caquèxia són:
+
+-   Analitzar les diferències en els nivells de biomolècules entre pacients control i pacients amb caquèxia.
+-   Aplicar tècniques d’anàlisi multivariable, especialment PCA, per detectar patrons latents en les dades.
+-   Identificar quines biomolècules tenen més pes en la diferenciació dels grups.
+
+## 3. Mètodes
+
+### Dades
+
+Les dades s’han obtingut del repositori facilitat a l'enunciat de l'exercici [metaboData](https://github.com/nutrimetabolomics/metaboData), que conté nivells de biomolècules en mostres d’orina de pacients control i pacients amb caquèxia.
+
+```{r input, include=FALSE}
+dades <- read.csv("~/metaboData/Datasets/2024-Cachexia/human_cachexia.csv")
+```
+
+### Metodologia
+
+1.  **Preprocessament de dades**:
+    -   S’ha importat i netejat el dataset.
+    -   S'ha realitzat un objecte $SummarizedExperiment()$.
+    -   S’ha realitzat una normalització per centrar les dades.
+2.  **Anàlisis exploratòries**:
+    -   Boxplots per visualitzar la distribució de biomolècules segons el grup.
+    -   PCAs per reduir la dimensionalitat i observar patrons de variabilitat.
+3.  **Mètodes estadístics aplicats**:
+    -   Càlcul de matriu de covariàncies i correlacions.
+    -   Càlcul de valors i vectors propis per PCA.
+    -   Ordenació dels pesos dels components principals.
+
+### Paquets
+
+Els paquets principals per l'estudi són:
+
+```{r libraries, include=FALSE}
+library(GEOquery)
+library(SummarizedExperiment)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+## 4. Resultats
+
+La principal diferència entre `SummarizedExperiment` i `ExpressionSet`, és què el primer és més flexbile en la informació de files, permeten els basats en `GRanges`i els descrits arbitrariament per `DataFrame`s.
+Aquest fet fa la primera classe més idónea per a una àmplia varietat d'experiments, particularment aquells basats en seqüències, com per exemple les de *RNA-Seq* i les *Chlp-Seq*, tal com s'explica a @SummarizedExperiment.
+
+```{r}
+se
+```
+
+D'aquesta primera exploració es treu la conclusió que la base de dades és de 77 pacients, que mostren o no caquèxia (columna Condition).
+Les dades són factors o numèriques segons ens convé i no falten valors.
+
+Seguixo amb una exploració estadística i gràfica simple.
+
+```{r fig.width=12, fig.height=12}
+resumdades_graf
+```
+
+Un cop observades les dades en cru, comencem l'estudi.
+
+### Cerca de factors latents en les dades d'estudi
+
+Per elaborar aquest estudi es segueixen els pasos descrits a @SanchezCarmona2024.
+
+Tenim unes dades heterogènies, però amb dades del mateix tipus, és a dir, magnituds biomètriques, en aquest cas nivell de biomolècules en orina.
+Basem doncs l'estudi en una anàlisi de covariàncies de les dades centrades.
+
+Es calcula la matriu de variànces ajustant a dividir per $n$ en lloc de per $(n-1)$ per fer els resultats compatibles en cas que es considerès necessari emplear més d'un mètode, com càlcul mitjançant covariànces i/o mitnjançant funcions, com ara $princomp$ i $prcomp$. Finalment, es calcula la matriu de correlacions.
+
+```{r}
+R
+```
+
+### Càlcul mitjançant matriu de covariàncies
+
+Als annexes es pot trobar la impressió de la variable $EIG$.
+A continuació es fa la transformació de les dades associada als components principals, obtinguda de la multiplicació de la matriu original per la matriu de vectors propis.
+
+```{r}
+round(vars1, 3)
+```
+
+El primer component explica un 90.2 % de la variabilitat, mentre que el segon un 4.9 %.
+
+Un cop fet el càlcul, es fa una primera representació:
+
+```{r}
+xlabel <- paste("PCA1 ", round(vars1[1]*100, 2),"%" )
+ylabel <- paste("PCA2 ", round(vars1[2]*100,2),"%" )
+plot(PCAS1[,1], PCAS1[,2], main = "Primeres PCAs de biomolècules",
+     xlab=xlabel, ylab=ylabel)
+```
+
+En aquesta primera representació observem els dos primers components, un en l'eix *y* i l'altre en el *x*
+Com es pot observar, hi ha tres valors allunyats de la resta que ens dificulten observar el gruix de les dades.
+
+Com que en el següent gràfic ens interessa veure quines pertanyen a pacients amb cachexia i quins a pacients control, retallem lleugerament el gràfic per poder ampliar el gruix de les dades, encara que ens doni com a resultat deixar de veure 3 observacions del gràfic.
+
+```{r}
+bgSurv <- colSurv <- ifelse(se$Condition=="cachexic", "red", "blue")
+pchSurv <- ifelse(se$Condition=="cachexic",1,2)
+plot(PCAS1[,1], PCAS1[,2], main = "Primeres PCAs de biomolècules",
+     xlab=xlabel, ylab=ylabel,
+     pch=pchSurv, col=colSurv, bg=bgSurv,
+     xlim = quantile(PCAS1[,1], c(0.1, 0.95)), 
+     ylim = quantile(PCAS1[,2], c(0.1, 0.95)))
+legend( "topright"  , inset = c(0.01,0.01), cex =1, 
+        bty = "y", legend = c("Cachexic", "Control"), 
+        text.col = c("red", "blue"),
+        col = c("red", "blue"), 
+        pt.bg = c("red","blue"), 
+        pch = c(1,2)
+)
+```
+
+### Càlcul dels components principals mitjançant les funcions `princomp` i `prcomp`
+
+Tal com s'ha buscat els valors de PCA amb el mètode anterior, més manual, es poden buscar amb les funcions `princomp` i `prcomp`.
+Mentre que `princomp` fa exactament el mateix mètode, `prcomp` calcula els components principals mitjançant la descomposició en valors singulars de la matriu de dades.
+
+Podem comparar les desviacions estàndard dels tres mètodes. 
+
+Primer mètode:
+
+```{r}
+sqrt(EIG$values)
+```
+
+Segon mètode (`princomp`):
+
+```{r}
+PCAS_met2$sdev
+```
+
+Tercer mètode (`prcomp`):
+
+```{r}
+PCAS_met3$sdev
+```
+
+Finalment, es poden comparar els vectors obringut els tres mètodes.
+
+Primer mètode:
+
+```{r}
+EIG$vectors
+```
+
+Segon mètode (`princomp`):
+
+```{r}
+PCAS_met2$loadings
+```
+
+Tercer mètode (`prcomp`):
+
+```{r}
+PCAS_met3$rotation[,1]
+```
+
+### Interpretació dels components
+
+fer sobre l'1 $PC3 = 0.027922349 * X1.6.Anhydro.beta.D.glucose + 0.028158536 * X1.Methylnicotinamide + 0.033941035 * X2.Aminobutyrate + 0.033118667 * X2.Hydroxyisobutyrate + 0.013516382 * X2.Oxoglutarate + ...$
+
+```{r}
+PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))]
+```
+
+Explicar el % dels components
+
+les variables d'aquest coimponent les pes mes grans son.. 
+Tres metodes semblant, interpeto el del codi
+
+
+## 5. Discussió
+
+Aquest estudi ha permès identificar patrons en les dades mitjançant PCA i altres tècniques estadístiques.
+Les limitacions inclouen la necessitat d'un conjunt de dades més gran, amb més observacions, per millorar la robustesa de les conclusions.
+També seria interessant combinar aquesta anàlisi amb tècniques de machine learning per aprofundir en la classificació dels pacients.
+Un altre aspecte important és que la base de dades no tenia un diccionari com a tal, per tant, de primeres, ha sigut difícil interpretar totes les dades.
+Cosidero important en totes aquestes bases de dades es mencionin les unitats de les variables numèriques i el context de l'estudi.
+Aquestes dades manquen en el dataset triat.
+
+## 6. Conclusions
+
+Repetir l'analisi dels components
+
+## 7. Referències
+
+-   @SummarizedExperiment
+-   @SanchezCarmona2024
+-   @metaboData
+
+## 8. Annexes
+
+**Descomposició dels càlculs d'EIG:**
+
+```{r}
+EIG
+```
