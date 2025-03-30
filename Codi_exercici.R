@@ -58,18 +58,22 @@ pchSurv <- ifelse(se$Condition=="cachexic",1,2)
 plot(PCAS1[,1], PCAS1[,2], main = "Primeres PCAs de biomolècules",
      xlab=xlabel, ylab=ylabel,
      pch=pchSurv, col=colSurv, bg=bgSurv)
-legend( "topright"  , inset = c(0.01,0.01), cex =1, 
-        bty = "y", legend = c("Cachexic", "Control"), 
+legend( "topright"  , inset = c(0.01,0.01), cex =1,
+        bty = "y", legend = c("Cachexic", "Control"),
         text.col = c("red", "blue"),
-        col = c("red", "blue"), 
-        pt.bg = c("red","blue"), 
+        col = c("red", "blue"),
+        pt.bg = c("red","blue"),
         pch = c(1,2)
 )
 
 # Càlcul dels components principals mitjançant les funcions princomp i prcomp
 
 # Mètode princomp
-PCAS_met2 <- princomp (t(cachexicNum))
+PCAS_met2 <- princomp (cachexicNum)
 # Mètode prcomp
-PCAS_met3 <- prcomp (t(cachexicNum))
+PCAS_met3 <- prcomp (cachexicNum)
+
+# Amb aquest codi es genera el .txt amb les dades, el deixo comentat perquè no s'executi cada cop
+# dades <- read.csv("~/metaboData/Datasets/2024-Cachexia/human_cachexia.csv")
+# write.table(dades, file = "dades_cachexia.txt", sep = "\t", quote = FALSE, row.names = FALSE)
 

@@ -3,13 +3,13 @@ title: "ANÀLISI DE DADES ÒMIQUES"
 author: "Daniel Sánchez"
 date: '`r format(Sys.Date(),"%e de %B, %Y")`'
 output:
+  pdf_document:
+    toc: true
+    number_sections: true
   html_document:
     toc: true
     toc_depth: 3
     toc_float: true
-  pdf_document:
-    toc: true
-    number_sections: true
 bibliography: "C:/Users/dd28/OneDrive/Màster/08. Anàlisi de dades òmiques/Unitat 1. Les ómiques/PAC1/referencies.bib"
 editor_options: 
   markdown: 
@@ -22,13 +22,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # PROVA D'AVALUACIÓ CONTÍNUA
 
-## 1. Resum
+## Resum
 
 Aquest estudi analitza els nivells de biomolècules en orina per identificar possibles diferències entre pacients control i pacients amb caquèxia.
 Es realitza una anàlisi de components principals (PCA) per explorar patrons latents en les dades i determinar quines biomolècules tenen un major impacte en la diferenciació dels grups.
 Els resultats obtinguts mostren que certes biomolècules tenen una major influència en la variació de les dades, fet que pot ser rellevant per estudis biomèdics.
 
-## 2. Objectius
+## Objectius
 
 A nivell general, l'objectiu principal és planificar i exevutar una versió simplificada del procés d'anàlisi de dades òmiques, alhora que es treballa amb eines i mètodes vistos en l'assignatura.
 
@@ -38,7 +38,7 @@ Més especificament, els objectius per l'estudi de caquèxia són:
 -   Aplicar tècniques d’anàlisi multivariable, especialment PCA, per detectar patrons latents en les dades.
 -   Identificar quines biomolècules tenen més pes en la diferenciació dels grups.
 
-## 3. Mètodes
+## Mètodes
 
 ### Dades
 
@@ -46,10 +46,6 @@ Les dades s’han obtingut del repositori facilitat a l'enunciat de l'exercici [
 
 ```{r input, include=FALSE}
 source("Codi_exercici.R")
-```
-```{r}
-dades <- read.csv("~/metaboData/Datasets/2024-Cachexia/human_cachexia.csv")
-write.table(dades, file = "dades_cachexia.txt", sep = "\t", quote = FALSE, row.names = FALSE)
 ```
 
 ### Metodologia
@@ -78,7 +74,7 @@ library(dplyr)
 library(tidyr)
 ```
 
-## 4. Resultats
+## Resultats
 
 La principal diferència entre `SummarizedExperiment` i `ExpressionSet`, és què el primer és més flexbile en la informació de files, permeten els basats en `GRanges`i els descrits arbitrariament per `DataFrame`s.
 Aquest fet fa la primera classe més idónea per a una àmplia varietat d'experiments, particularment aquells basats en seqüències, com per exemple les de *RNA-Seq* i les *Chlp-Seq*, tal com s'explica a @SummarizedExperiment.
@@ -107,9 +103,7 @@ Basem doncs l'estudi en una anàlisi de covariàncies de les dades centrades.
 
 Es calcula la matriu de variànces ajustant a dividir per $n$ en lloc de per $(n-1)$ per fer els resultats compatibles en cas que es considerès necessari emplear més d'un mètode, com càlcul mitjançant covariànces i/o mitnjançant funcions, com ara $princomp$ i $prcomp$. Finalment, es calcula la matriu de correlacions.
 
-```{r}
-R
-```
+Als annexes es pot observar la variable $R$ que mostra la matriu de correlacions. 
 
 ### Càlcul mitjançant matriu de covariàncies
 
@@ -120,11 +114,11 @@ A continuació es fa la transformació de les dades associada als components pri
 round(vars1, 3)
 ```
 
-El primer component explica un 90.2 % de la variabilitat, mentre que el segon un 4.9 %.
+El primer component explica un 77.2 % de la variabilitat, mentre que el segon un 11.3 %.
 
 Un cop fet el càlcul, es fa una primera representació:
 
-```{r}
+```{r echo = FALSE}
 xlabel <- paste("PCA1 ", round(vars1[1]*100, 2),"%" )
 ylabel <- paste("PCA2 ", round(vars1[2]*100,2),"%" )
 plot(PCAS1[,1], PCAS1[,2], main = "Primeres PCAs de biomolècules",
@@ -136,7 +130,7 @@ Com es pot observar, hi ha tres valors allunyats de la resta que ens dificulten 
 
 Com que en el següent gràfic ens interessa veure quines pertanyen a pacients amb cachexia i quins a pacients control, retallem lleugerament el gràfic per poder ampliar el gruix de les dades, encara que ens doni com a resultat deixar de veure 3 observacions del gràfic.
 
-```{r}
+```{r echo = FALSE}
 bgSurv <- colSurv <- ifelse(se$Condition=="cachexic", "red", "blue")
 pchSurv <- ifelse(se$Condition=="cachexic",1,2)
 plot(PCAS1[,1], PCAS1[,2], main = "Primeres PCAs de biomolècules",
@@ -152,6 +146,8 @@ legend( "topright"  , inset = c(0.01,0.01), cex =1,
         pch = c(1,2)
 )
 ```
+
+D'aquest gràfic podriem pensar que els valors pels pacients amb caquèxia són més dispersos que els valors pels pacients control. 
 
 ### Càlcul dels components principals mitjançant les funcions `princomp` i `prcomp`
 
@@ -183,36 +179,44 @@ Finalment, es poden comparar els vectors obringut els tres mètodes.
 Primer mètode:
 
 ```{r}
-EIG$vectors
+head(EIG$vectors[,1],5)
 ```
 
 Segon mètode (`princomp`):
 
 ```{r}
-PCAS_met2$loadings
+head(PCAS_met2$loadings[,1],5)
 ```
 
 Tercer mètode (`prcomp`):
 
 ```{r}
-PCAS_met3$rotation[,1]
+head(PCAS_met3$rotation[,1],5)
 ```
+
+Els pesos adjuntats pels tres mètodes pertanyen a les cinc primeres molècules del primer component, s'adjunten els pesos de tots els components en els annexos.
 
 ### Interpretació dels components
 
-fer sobre l'1 $PC3 = 0.027922349 * X1.6.Anhydro.beta.D.glucose + 0.028158536 * X1.Methylnicotinamide + 0.033941035 * X2.Aminobutyrate + 0.033118667 * X2.Hydroxyisobutyrate + 0.013516382 * X2.Oxoglutarate + ...$
+Amb l'estudi fet observem que el primer component explica el 77.2 % de la variabilitat, mentre que el segon un 11.3 %. És per això, que l'estudi s'ha centrat en observar aquest primer component, tot i que en els gràfics també s'utilitza el segon.
+
+Dins d'aquest primer component es poden observar els pesos de les diferents variables, en aquest cas biomolècules. Aparentment, la creatinina és la biomolècula que més afecta a la variable resposta. El citrate i el hippurate són la segona i tercera biomolècula amb més pes. 
+
+Aquí es poden veure, a mode d'exemple, ja que en l'apartat de resultats es poden observar tots, els pesos del primer component amb el segon mètode aplicat ordenats per pes i amb el valor absolut. Es mostren només els 5 primers, ja que a partir del tercer tots són molt propers a zero. La taula completa s'adjunta als annexes.
 
 ```{r}
-PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))]
+head(PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))],5)
 ```
 
-Explicar el % dels components
+A partir d'aquesta taula es pot treure la següent fórmula:
 
-les variables d'aquest coimponent les pes mes grans son.. 
-Tres metodes semblant, interpeto el del codi
+$PCA2 = CP_Nou = 0.9417 * Creatinine + 0.2195 * Citrate + 0.1976 * Hippurate + ... + 0.0005 * Isoleucine$
 
+A partir de la quarta molècula els valors s'observen molt propers a zero, per tant, podriem pensar que les tres molècules mencionades són les que més afecten. 
 
-## 5. Discussió
+Dels mètodes treballat es pot dir que els tres han donat resultants semblants, per tant, podríem pensar que aquests són correctes i contrastats. 
+
+## Discussió
 
 Aquest estudi ha permès identificar patrons en les dades mitjançant PCA i altres tècniques estadístiques.
 Les limitacions inclouen la necessitat d'un conjunt de dades més gran, amb més observacions, per millorar la robustesa de les conclusions.
@@ -221,20 +225,55 @@ Un altre aspecte important és que la base de dades no tenia un diccionari com a
 Cosidero important en totes aquestes bases de dades es mencionin les unitats de les variables numèriques i el context de l'estudi.
 Aquestes dades manquen en el dataset triat.
 
-## 6. Conclusions
+## Conclusions
 
-Repetir l'analisi dels components
+Les principals conclusions extretes de l'estudi indiquen una consistència entre els tres mètodes aplicats per a l'anàlisi de components principals, suggerint la robustesa dels resultats. El primer component principal, que explica un significatiu 77.2% de la variabilitat, destaca la creatinina, el citrat i l'hipurat com les biomolècules amb major pes a l'hora de discriminar entre pacients amb caquèxia i el grup control. Aquesta observació es recolza en la fórmula del component principal obtinguda amb el segon mètode: 
+$PCA2 = CP_Nou = 0.9417 * Creatinine + 0.2195 * Citrate + 0.1976 * Hippurate + ... + 0.0005 * Isoleucine$), 
+on aquestes tres molècules presenten els coeficients més elevats. La dispersió més gran observada en els valors dels pacients amb caquèxia en els gràfics de components principals, en comparació amb el grup control, podria indicar una major heterogeneïtat metabòlica en la condició de caquèxia. En conjunt, els resultats suggereixen que la creatinina, el citrat i l'hipurat són biomarcadors potencials per a la detecció o la diferenciació de la caquèxia.
 
-## 7. Referències
+## Referències
 
 -   @SummarizedExperiment
 -   @SanchezCarmona2024
 -   @metaboData
 
-## 8. Annexes
+El codi i les dades utilitzades en aquest estudi estan disponibles al següent repositori de GitHub: [https://github.com/DanielSan33-4/Sanchez-Pelaez-Daniel-PAC1.git]
+
+## Annexes
 
 **Descomposició dels càlculs d'EIG:**
 
+**Matriu de correlacions:**
+```{r}
+R
+```
+
+**Matriu de covariàncies:**
 ```{r}
 EIG
 ```
+
+**Pesos de tots els components segons el primer mètode treballat:**
+
+```{r}
+EIG$vectors
+```
+
+**Pesos de tots els components segons el tercer mètode treballat:**
+
+```{r}
+PCAS_met2$loadings
+```
+
+**Pesos de tots els components segons el tercer mètode treballat:**
+
+```{r}
+PCAS_met3$rotation
+```
+
+**Pesos segon component ordenats:**
+
+```{r}
+PCAS_met2$loadings[,1][names(sort(abs(PCAS_met2$loadings[,1]), decreasing = TRUE))]
+```
+
