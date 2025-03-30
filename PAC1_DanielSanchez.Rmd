@@ -45,7 +45,11 @@ Més especificament, els objectius per l'estudi de caquèxia són:
 Les dades s’han obtingut del repositori facilitat a l'enunciat de l'exercici [metaboData](https://github.com/nutrimetabolomics/metaboData), que conté nivells de biomolècules en mostres d’orina de pacients control i pacients amb caquèxia.
 
 ```{r input, include=FALSE}
+source("Codi_exercici.R")
+```
+```{r}
 dades <- read.csv("~/metaboData/Datasets/2024-Cachexia/human_cachexia.csv")
+write.table(dades, file = "dades_cachexia.txt", sep = "\t", quote = FALSE, row.names = FALSE)
 ```
 
 ### Metodologia
