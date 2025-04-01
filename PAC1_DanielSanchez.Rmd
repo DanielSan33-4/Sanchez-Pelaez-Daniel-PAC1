@@ -3,13 +3,13 @@ title: "ANÀLISI DE DADES ÒMIQUES"
 author: "Daniel Sánchez"
 date: '`r format(Sys.Date(),"%e de %B, %Y")`'
 output:
+  pdf_document:
+    toc: true
+    number_sections: true
   html_document:
     toc: true
     toc_depth: 3
     toc_float: true
-  pdf_document:
-    toc: true
-    number_sections: true
 bibliography: "C:/Users/dd28/OneDrive/Màster/08. Anàlisi de dades òmiques/Unitat 1. Les ómiques/PAC1/referencies.bib"
 editor_options: 
   markdown: 
@@ -66,7 +66,7 @@ source("Codi_exercici.R")
 
 Els paquets principals per l'estudi són:
 
-```{r libraries, include=FALSE}
+```{r}
 library(GEOquery)
 library(SummarizedExperiment)
 library(ggplot2)
